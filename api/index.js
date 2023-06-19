@@ -1,7 +1,7 @@
 const express = require('express')
-const cors =  require('cors')
+const cors = require('cors')
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 const { faker } = require('@faker-js/faker')
 const routerApi = require('./routes')
 const {
@@ -13,11 +13,11 @@ const {
 app.use(express.json())
 app.use(cors())
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
     res.send('Hola, este es mi server en express')
 })
 
-app.get('/productos', (req, res) => {
+app.get('/api/productos', (req, res) => {
     const products = []
 
     for (let index = 0; index < 100; index++) {
@@ -30,10 +30,11 @@ app.get('/productos', (req, res) => {
     res.json(products)
 })
 
+app.listen(port, () => {
+    console.log(`estoy corriendo en el puerto ${port}`)
+})
+
 routerApi(app)
 app.use(logError)
 app.use(boomErrorHandler)
 app.use(errorHandler)
-
-
-
