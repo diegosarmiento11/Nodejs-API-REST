@@ -15,6 +15,7 @@ class ProductsService {
                 name: faker.commerce.productName(),
                 price: parseInt(faker.commerce.price(), 10),
                 image: faker.image.url(),
+                isBlocked: faker.datatype.boolean(),
             })
         }
     }
@@ -24,9 +25,7 @@ class ProductsService {
             id: faker.string.uuid(),
             ...data,
         }
-
         this.products.push(newProduct)
-
         return newProduct
     }
 
@@ -56,14 +55,17 @@ class ProductsService {
         return new Promise((resolve) => {
             setTimeout(() => {
                 resolve(this.products)
-            }, 5000)
+            }, 2000)
         })
     }
 
-    findOne(id) {
+    async findOne(id) {
         const product = this.products.find((e) => e.id === id)
         if (!product) {
             throw boom.notFound('Product not found')
+        }
+        if (product.isBlocked) {
+            throw boom.forbidden('Product forbidden')
         }
     }
 }
