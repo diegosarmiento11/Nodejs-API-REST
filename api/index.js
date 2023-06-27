@@ -13,7 +13,7 @@ const {
 app.use(express.json())
 app.use(cors())
 
-app.get('/api', (req, res) => {
+app.get('/api/v1', (req, res) => {
     res.send('Hola, este es mi server en express')
 })
 
